@@ -1,0 +1,11 @@
+﻿<linker>
+    <assembly fullname="AWSSDK.Core" preserve="all"/>
+    <assembly fullname="AWSSDK.CognitoIdentity" preserve="all"/>
+    <assembly fullname="AWSSDK.SecurityToken" preserve="all"/>
+    <assembly fullname="AWSSDK.CognitoIdentityProvider" preserve="all"/>
+    <assembly fullname="AWSSDK.Rekognition" preserve="all"/>
+    <assembly fullname="Microsoft.Bcl.AsyncInterfaces" preserve="all"/>
+    <assembly fullname="System.Runtime.CompilerServices.Unsafe" preserve="all"/>
+    <assembly fullname="System.Threading.Tasks.Extensions.dll" preserve="all"/>
+    
+</linker>
