@@ -192,6 +192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 522581758}
   - component: {fileID: 522581757}
+  - component: {fileID: 522581759}
   m_Layer: 0
   m_Name: Rekognition
   m_TagString: Untagged
@@ -211,7 +212,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9999b811161eb0f45b7717f9728817fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hi: hello
 --- !u!4 &522581758
 Transform:
   m_ObjectHideFlags: 0
@@ -226,6 +226,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &522581759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522581756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8439875d9ca00f5488dca3ab5ef503c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grabber: {fileID: 1847518928}
+  rekognizer: {fileID: 522581757}
 --- !u!1 &825387604
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,8 +434,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9498c9096c36e4c4797c5993a4bbf017, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  texture: {fileID: 0}
   cameraManager: {fileID: 825387607}
+  ImageGrabbed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1847518929
 Transform:
   m_ObjectHideFlags: 0

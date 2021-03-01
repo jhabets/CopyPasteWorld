@@ -1,45 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
+
+[System.Serializable]
+public class ImageGrabbedEvent : UnityEvent<string>
+{
+}
 
 public class ImageGrab : MonoBehaviour
 {
 
     public ARCameraManager cameraManager;
+    public ImageGrabbedEvent ImageGrabbed;
 
     private Texture2D _texture;
+    private string _base64 = "";
     private bool _isBusy = false;
 
-    void OnEnable()
-    {
+    void Update(){
 
-        cameraManager.frameReceived += OnCameraFrameReceived;
-    }
-
-    void OnDisable()
-    {
-        cameraManager.frameReceived -= OnCameraFrameReceived;
-    }
-
-    void OnCameraFrameReceived(ARCameraFrameEventArgs eventArgs)
-    {
-        //try to get the image... creates a local scope image var
-        if (!cameraManager.TryAcquireLatestCpuImage(out XRCpuImage image))
-        {
-            if(!_isBusy){
-                Debug.Log("Wait a minute baby. image needs time to be ready.");
-                StartCoroutine(ProcessImage(image));
+        if(Input.touchCount > 0 && !_isBusy){
+            if(Input.touches[0].phase == TouchPhase.Began){
+                Grab();
             }
-            image.Dispose();
         }
     }
 
-    IEnumerator ProcessImage(XRCpuImage image)
+    void Grab(){
+        //XRCpuImage is a pointer into device memory, handle carefully
+        if( cameraManager.TryAcquireLatestCpuImage(out XRCpuImage image) ){
+            StartCoroutine(Process(image));//pass off a reference to image
+            image.Dispose(); //clean up this reference to image
+        }
+    }
+
+
+    IEnumerator Process(XRCpuImage image)
     {
-        _isBusy = true;
-    
+        _isBusy = true; //set flag to prevent multiple calls to Process.
         var request = image.ConvertAsync(new XRCpuImage.ConversionParams{
             inputRect = new RectInt( 0, 0, image.width, image.height),
             //downsample in half
@@ -54,9 +55,9 @@ public class ImageGrab : MonoBehaviour
         }
 
         if(request.status != XRCpuImage.AsyncConversionStatus.Ready){
-            Debug.Log("getting image broke");
+            Debug.Log($"image is done, but not ready.");
             request.Dispose();
-            _isBusy = false;
+            _isBusy = false;  //set flag to allow new calls to Process
             yield break;
         }
 
@@ -73,9 +74,23 @@ public class ImageGrab : MonoBehaviour
         _texture.LoadRawTextureData(rawData);
         _texture.Apply();
 
-        string base64str = System.Convert.ToBase64String(_texture.EncodeToPNG());
+        string _base64 = System.Convert.ToBase64String(_texture.EncodeToPNG());
         request.Dispose();
-        Debug.Log($"base64 string: {base64str}");
-        _isBusy = false;
+        
+        PublishBase64(_base64);
+        _isBusy = false; //set flag to allow new calls to Process
+    }
+
+    public void PublishBase64(string b64){
+        //cache the b64 image string 
+        _base64 = b64;
+
+        //Emit Event with image string as payload.
+        ImageGrabbed.Invoke(b64);
+    }
+
+    //make the _base64 image string available via component access
+    public string GetBase64Image(){
+        return _base64;
     }
 }
