@@ -4,5 +4,10 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
-  m_configObjects: {}
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_TricksterViz/main.unity
+    guid: 95b41d10878481a4f81b0bd604aa4dd7
+  m_configObjects:
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 90b91f2fe1905f749aec205e7a778dce, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 704087067e68369458e2993a13a0e29f, type: 2}
