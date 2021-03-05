@@ -61,6 +61,4 @@ public class RekognitionClient : MonoBehaviour
             Debug.Log("completed detectText");
         };
     }
-
-
 }
